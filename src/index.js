@@ -5,26 +5,67 @@ import SimpleLightbox from "simplelightbox";
 import "simplelightbox/dist/simple-lightbox.min.css";
 
 const input = document.querySelector('input');
-const button = document.querySelector('button');
 const searchForm = document.querySelector('#search-form')
+const gallery = document.querySelector('.gallery');
 
-const API_KEY = '34988935-65ac090a375899987f778a290';
-const image_type = 'photo';
-const orientation = 'horizontal';
-const safesearch = 'true';
+const axios = require('axios');
+let page = 1;
 
 searchForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    let q = input.value;
-    console.log(q);
+    const q = input.value;
+    fetch(`https://pixabay.com/api/?key=34988935-65ac090a375899987f778a290&q=${q}&image_type=photo&image_type=photo&orientation=horizontal&safesearch=true`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(response.status);
+            }
+            return response.json();
+        })
+        .then(data => {
+            const dataArray = data.hits;
+            if (!data.total || !q) {
+                gallery.innerHTML = '';
+                Notiflix.Notify.failure(`Sorry, there are no images matching your search query. Please try again.`)
+            }
+            else {
+                Notiflix.Notify.success(`Hooray! We found ${data.totalHits} images.`);
+                gallery.innerHTML = '';
+                console.log(dataArray),
+                    [...dataArray].forEach(item => {
+                        const galleryItem =
+                            `<div class="photo-card">
+                                <a class="photo-link" href="${item.largeImageURL}">
+                                    <img class="photo-img" src="${item.webformatURL}" data-source="${item.largeImageURL}" alt="${item.tags}" width=100% loading="lazy" />
+                                    <div class="info">
+                                        <p class="info-item">
+                                            <b>Likes</b>
+                                            ${item.likes}
+                                        </p>
+                                        <p class="info-item">
+                                            <b>Views</b>
+                                            ${item.views}
+                                        </p>
+                                        <p class="info-item">
+                                            <b>Comments</b>
+                                            ${item.comments}
+                                        </p>
+                                        <p class="info-item">
+                                            <b>Downloads</b>
+                                            ${item.downloads}
+                                        </p>
+                                    </div>
+                                </a>
+                            </div>`
+                        gallery.insertAdjacentHTML('beforeend', galleryItem);
+                    })
+            }
+        })
+        .catch(err => {
+            console.log(err)
+        })
 });
 
-// https://pixabay.com/api/?key=34988935-65ac090a375899987f778a290&q=yellow+flowers&image_type=photo
-
-// const URL = "https://pixabay.com/api/?key="+API_KEY+"&q="+encodeURIComponent('red roses');
-// $.getJSON(URL, function(data){
-// if (parseInt(data.totalHits) > 0)
-//     $.each(data.hits, function(i, hit){ console.log(hit.pageURL); });
-// else
-//     console.log('No hits');
-// });
+let lightbox = new SimpleLightbox('.photo-link', { 
+    captionDelay: 250,
+    captionsData: 'alt',
+});
