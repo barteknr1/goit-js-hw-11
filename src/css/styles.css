@@ -12,17 +12,14 @@ body {
   line-height: 1.5;
 }
 
-#search-box {
+#search-form {
   font: inherit;
   padding: 8px;
   max-width: 320px;
-  margin-bottom: 16px;
 }
-.country-list {
-  list-style: none;
-}
-.country-list__item {
+.wrapper {
   display: flex;
-  align-items: center;
-  gap: 10px;
+  justify-content: center;
+  background-color: rgb(65, 65, 200);
+  margin-bottom: 16px;
 }

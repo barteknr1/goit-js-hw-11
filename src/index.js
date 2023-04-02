@@ -1,46 +1,30 @@
 import './css/styles.css';
-// import Notiflix from 'notiflix';
-// import { fetchCountries } from './fetchCountries';
-// import debounce from 'lodash.debounce';
+import Notiflix from 'notiflix';
+import axios from 'axios';
+import SimpleLightbox from "simplelightbox";
+import "simplelightbox/dist/simple-lightbox.min.css";
 
-// const DEBOUNCE_DELAY = 300;
+const input = document.querySelector('input');
+const button = document.querySelector('button');
+const searchForm = document.querySelector('#search-form')
 
-// const searchBox = document.querySelector("#search-box");
-// const countryList = document.querySelector(".country-list");
-// const countryInfo = document.querySelector(".country-info");
+const API_KEY = '34988935-65ac090a375899987f778a290';
+const image_type = 'photo';
+const orientation = 'horizontal';
+const safesearch = 'true';
 
-// searchBox.addEventListener("input", debounce(e => {
-//     fetchCountries(searchBox.value.trim())
-//         .then(data => {
-//             if (data.length > 10) {
-//                 countryInfo.innerHTML = '';
-//                 countryList.innerHTML = '';
-//                 Notiflix.Notify.info(`Too many matches found. Please enter a more specific name.`);
-//             }
-//             if (data.length >= 2 && data.length <= 10) {
-//                 countryInfo.innerHTML = '';
-//                 countryList.innerHTML = '';
-//                 [...data].forEach(item => {
-//                     let countryInList =
-//                         `<li class="country-list__item"><img class="country-flag" src="${item.flags.svg}" alt="${item.flags.alt}" width=40></img>
-//                         <p class="country-list__name"><b>${item.name.official}</b></p></li>`
-//                     countryList.innerHTML += countryInList;
-//                 }
-//                 )
-//             }
-//             if (data.length === 1) {
-//                 countryInfo.innerHTML = '';
-//                 countryList.innerHTML = '';
-//                 countryInfo.innerHTML =
-//                     `<h2 class="country-info__name"><img src="${data[0].flags.svg}" alt="${data[0].flags.alt}" width=40></img>
-//                     ${data[0].name.official}</h2>
-//                     <p><b>Capital:</b> ${data[0].capital}</p>
-//                     <p><b>Population:</b> ${data[0].population}</p>
-//                     <p><b>Languages:</b> ${Object.values(data[0].languages).join(', ')}</p>`
-//             }
-//         })
-//         .catch(err => {
-//             console.log(err);
-//                 Notiflix.Notify.failure(`Oops, there is no data with that name`)
-//         });
-// }, DEBOUNCE_DELAY));
+searchForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    let q = input.value;
+    console.log(q);
+});
+
+// https://pixabay.com/api/?key=34988935-65ac090a375899987f778a290&q=yellow+flowers&image_type=photo
+
+// const URL = "https://pixabay.com/api/?key="+API_KEY+"&q="+encodeURIComponent('red roses');
+// $.getJSON(URL, function(data){
+// if (parseInt(data.totalHits) > 0)
+//     $.each(data.hits, function(i, hit){ console.log(hit.pageURL); });
+// else
+//     console.log('No hits');
+// });
