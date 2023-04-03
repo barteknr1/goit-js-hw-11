@@ -7,14 +7,15 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 const input = document.querySelector('input');
 const searchForm = document.querySelector('#search-form')
 const gallery = document.querySelector('.gallery');
-
+const load = document.querySelector('.load-more');
 const axios = require('axios');
-// let page = 1;
-// &page=${page}
+let page
+
 searchForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const q = input.value;
-    fetch(`https://pixabay.com/api/?key=34988935-65ac090a375899987f778a290&q=${q}&image_type=photo&image_type=photo&orientation=horizontal&safesearch=true&per_page=40`)
+    page = 1;
+    fetch(`https://pixabay.com/api/?key=34988935-65ac090a375899987f778a290&q=${q}&image_type=photo&image_type=photo&orientation=horizontal&safesearch=true&per_page=40&page=${page}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error(response.status);
@@ -33,8 +34,8 @@ searchForm.addEventListener('submit', (e) => {
                 console.log(dataArray),
                     [...dataArray].forEach(item => {
                         const galleryItem =
-                            `<div class="photo-card">
-                                <a class="photo-link" href="${item.largeImageURL}">
+                            `<a class="photo-link" href="${item.largeImageURL}">
+                                <div class="photo-card">
                                     <img class="photo-img" src="${item.webformatURL}" data-source="${item.largeImageURL}" alt="${item.tags}" width=100% loading="lazy" />
                                     <div class="info">
                                         <p class="info-item">
@@ -54,18 +55,17 @@ searchForm.addEventListener('submit', (e) => {
                                             ${item.downloads}
                                         </p>
                                     </div>
-                                </a>
-                            </div>`
+                                </div>
+                            </a>`
                         gallery.insertAdjacentHTML('beforeend', galleryItem);
                     })
+                let lightbox = new SimpleLightbox('.photo-link', {
+                    captionDelay: 250,
+                    captionsData: 'alt',
+                })
             }
         })
         .catch(err => {
             console.log(err)
         })
-});
-
-var lightbox = new SimpleLightbox('.photo-link', { 
-    captionDelay: 250,
-    captionsData: 'alt',
 });
