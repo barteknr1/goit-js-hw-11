@@ -46,12 +46,15 @@ body {
   box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.12), 0px 1px 1px rgba(0, 0, 0, 0.14),
     0px 2px 1px rgba(0, 0, 0, 0.2);
 }
-.photo-img:hover {
+.photo-card:hover {
   transform: scale(1.03);
 }
+.photo-card {
+  transition: transform 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 5%;
+}
 .photo-img {
-  height: 50%;
   width: 100%;
   object-fit: cover;
-  transition: transform 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
 }
