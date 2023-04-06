@@ -14,7 +14,7 @@ const fetchImages = async (perPage, page) => {
                 image_type: 'photo',
                 orientation: 'horizontal',
                 safeSearch: true,
-                perPage: perPage,
+                per_page: perPage,
                 page,
             }
         });

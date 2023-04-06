@@ -1,8 +1,9 @@
 import './css/styles.css';
 import Notiflix from 'notiflix';
-import fetchImages from './fetch';
-import renderGallery from './renderGallery';
+import fetchImages from './js/fetchImages';
+import renderGallery from './js/renderGallery';
 
+const input = document.querySelector('input[name="searchQuery"]');
 const searchForm = document.querySelector('#search-form');
 const gallery = document.querySelector('.gallery');
 const loadMoreButton = document.querySelector('.load-more');
@@ -13,21 +14,31 @@ const getImages = async (e) => {
     try {
         e.preventDefault();
         page = 1;
+        q = input.value;
         const photos = await fetchImages(perPage, page);
         const { totalHits: photosQuantity, hits: photoArray } = photos;
-        if (!photoArray.length) {
+        if (!photoArray.length || !q) {
+            loadMoreButton.style.visibility = 'hidden';
             gallery.innerHTML = '';
             Notiflix.Notify.failure(`Sorry, there are no images matching your search query. Please try again.`)
         }
         else {
-    Notiflix.Notify.success(`Hooray! We found ${photosQuantity} images.`);
-    gallery.innerHTML = '';
-    renderGallery(photoArray);
+            Notiflix.Notify.success(`Hooray! We found ${photosQuantity} images.`);
+            gallery.innerHTML = '';
+            renderGallery(photoArray);
+            loadMoreButton.style.visibility = 'visible';
+            if (photosQuantity <= perPage) {
+                loadMoreButton.style.visibility = 'hidden';  
+            }
         }
     }
     catch (err) {
         console.log(err);
     }
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+    });
 }
 
 searchForm.addEventListener('submit', getImages);
@@ -37,12 +48,23 @@ const loadMore = async () => {
         page++;
         const photos = await fetchImages(perPage, page);
         const { totalHits: photosQuantity, hits: photoArray } = photos;
-        // const limitPages = photosQuantity / perPage;
         renderGallery(photoArray);
+        const actualNumberOfImages = page * perPage;
+        if (actualNumberOfImages > photosQuantity) {
+            Notiflix.Notify.info(`We're sorry, but you've reached the end of search results.`);
+            loadMoreButton.style.visibility = 'hidden';
+        }
     }
     catch (err) {
         console.log(err);
     }
+    const { height: cardHeight } = document
+        .querySelector(".gallery")
+        .firstElementChild.getBoundingClientRect();
+
+    window.scrollBy({
+        top: cardHeight * 2,
+        behavior: "smooth",
+    });
 }
 loadMoreButton.addEventListener('click', loadMore);
-// code spell checker

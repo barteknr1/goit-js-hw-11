@@ -8,34 +8,26 @@ let lightbox = new SimpleLightbox('.photo-link', {
 });
 
 const renderGallery = (photoArray) => {
-    const galleryItem = photoArray.map(({
-        webformatURL,
-        largeImageURL,
-        tags,
-        likes,
-        views,
-        comments,
-        downloads,
-    }) => {
-        return `<a class="photo-link" href="${largeImageURL}">
+    const galleryItem = photoArray.map((img) => {
+        return `<a class="photo-link" href="${img.largeImageURL}">
                                 <div class="photo-card">
-                                    <img class="photo-img" src="${webformatURL}" data-source="${largeImageURL}" alt="${tags}" width=100% loading="lazy" />
+                                    <img class="photo-img" src="${img.webformatURL}" data-source="${img.largeImageURL}" alt="${img.tags}" width=100% loading="lazy" />
                                     <div class="info">
                                         <p class="info-item">
                                             <b>Likes</b>
-                                            ${likes}
+                                            ${img.likes}
                                         </p>
                                         <p class="info-item">
                                             <b>Views</b>
-                                            ${views}
+                                            ${img.views}
                                         </p>
                                         <p class="info-item">
                                             <b>Comments</b>
-                                            ${comments}
+                                            ${img.comments}
                                         </p>
                                         <p class="info-item">
                                             <b>Downloads</b>
-                                            ${downloads}
+                                            ${img.downloads}
                                         </p>
                                     </div>
                                 </div>
