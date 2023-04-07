@@ -14,7 +14,7 @@ const getImages = async (e) => {
     try {
         e.preventDefault();
         page = 1;
-        q = input.value;
+        const q = input.value;
         const photos = await fetchImages(perPage, page);
         const { totalHits: photosQuantity, hits: photoArray } = photos;
         if (!photoArray.length || !q) {
